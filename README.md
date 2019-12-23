@@ -96,6 +96,7 @@ alexa ask new --skill-name HelloWorld
 cd ~/alexa-demo/app/
 mv HelloWorld/* .
 mv HelloWorld/.ask .
+mv HelloWorld/.git* .
 rmdir HelloWorld
 
 # Deploy (all): this will create both lambda and Alexa Skill

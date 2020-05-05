@@ -1,5 +1,5 @@
 # Original source from https://hub.docker.com/_/node/
-FROM node:8.10-alpine
+FROM node:12.16.3-alpine
 LABEL maintainer="Martin DSouza <martin@talkapex.com>"
 LABEL maintainer="Kevin Duane <crackmac@gmail.com>"
 

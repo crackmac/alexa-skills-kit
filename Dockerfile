@@ -16,6 +16,7 @@ RUN apk add --update \
   make \
   bash \
   py-pip \
+  zip \
   git
 
 # See https://github.com/nodejs/docker-node/issues/603

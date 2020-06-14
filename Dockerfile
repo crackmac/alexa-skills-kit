@@ -29,7 +29,11 @@ RUN npm install -g ask-cli && \
   mkdir /home/node/.ask && \
   mkdir /home/node/.aws && \
   mkdir /home/node/app && \
-  pip install awscli --upgrade --user
+  pip install awscli --upgrade --user 
+
+RUN npm --version && \
+  aws --version && \
+  ask --version 
 
 # Volumes:
 # /home/node/.ask: This is the location of the ask config folder
@@ -39,5 +43,5 @@ VOLUME ["/home/node/.ask", "/home/node/.aws", "/home/node/app"]
 # Enable this if you want the container to permanently run
 # CMD ["/bin/bash"]
 
-# Default folder for developers to work in
+# Default folder forgit status developers to work in
 WORKDIR /home/node/app

@@ -4,7 +4,7 @@ LABEL maintainer="Martin DSouza <martin@talkapex.com>"
 LABEL maintainer="Kevin Duane <crackmac@gmail.com>"
 
 # ASK CLI version
-ARG ASKVER=2.10.2
+ARG ASKVER=2.11.0
 
 # NPM_CONFIG_PREFIX: See below
 # PATH: Required for ask cli location

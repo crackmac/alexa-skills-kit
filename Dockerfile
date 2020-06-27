@@ -3,6 +3,8 @@ FROM node:12.16.3-alpine
 LABEL maintainer="Martin DSouza <martin@talkapex.com>"
 LABEL maintainer="Kevin Duane <crackmac@gmail.com>"
 
+# ASK CLI version
+ARG ASKVER=1.7.20
 
 # NPM_CONFIG_PREFIX: See below
 # PATH: Required for ask cli location
@@ -19,14 +21,12 @@ RUN apk add --update \
   zip \
   git
 
-# See https://github.com/nodejs/docker-node/issues/603
-# ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
 WORKDIR /app
 USER node
 
 # /home/node/.ask: For ask CLI configuration file
 # /home/node/.ask: Folder to map to for app development
-RUN npm install -g ask-cli && \
+RUN npm install -g ask-cli@$ASKVER && \
   mkdir /home/node/.ask && \
   mkdir /home/node/.aws && \
   mkdir /home/node/app && \

@@ -28,7 +28,7 @@ Please read the other sections on how to properly use this container and volume 
 
 ```bash
 # Get image
-docker pull martindsouza/amazon-ask-cli
+docker pull registry.gitlab.com/crackmac/amazon-ask-cli
 
 # Create a ASK configuration folders.
 cd ~
@@ -44,24 +44,7 @@ alias alexa="docker run -it --rm \
   -v ~/alexa-demo/ask-config:/home/node/.ask \
   -v ~/alexa-demo/aws-config:/home/node/.aws \
   -v ~/alexa-demo/app:/home/node/app \
-  martindsouza/amazon-ask-cli:latest "
-
-# For windows users you'll need to run the following each time (unless you have an alternative to alias)
-# docker run -it --rm \
-# -v C:/%UserProfile%/alexa-demo/ask-config:/home/node/.ask ^
-# -v C:/%UserProfile%/alexa-demo/aws-config:/home/node/.aws ^
-# -v C:/%UserProfile%/alexa-demo/app:/home/node/app ^
-# martindsouza/amazon-ask-cli:latest ^ 
-# <command> 
-
-
-# If using Lambda and want to load your configuration run:
-# alexa aws configure
-#
-# Some parameters to help out:
-# Region: us-east-1
-# Output format: json
-
+  registry.gitlab.com/crackmac/docker-amazon-ask-cli/master:latest "
 
 # Configure ASK
 alexa ask init --no-browser
@@ -147,7 +130,7 @@ In this mode the container will start, you run your `ask` command, then the cont
 docker run -it --rm \
   -v $(pwd)/ask-config:/home/node/.ask \
   -v $(pwd)/hello-world:/home/node/app-dev \
-  martindsouza/amazon-ask-cli:latest \
+  registry.gitlab.com/crackmac/docker-amazon-ask-cli/master:latest \
   ask init -l
 ```
 
@@ -159,7 +142,7 @@ In this mode, the container will start, you can then run the container's bash, a
 docker run -it --rm \
   -v $(pwd)/ask-config:/home/node/.ask \
   -v $(pwd)/app-dev/HelloWorld:/home/node/app-dev \
-  martindsouza/amazon-ask-cli:latest \
+  registry.gitlab.com/crackmac/docker-amazon-ask-cli/master:latest \
   bash
 
 # You'll be prompted with:
@@ -181,13 +164,13 @@ Path | Description
 ## Developers
 
 ```bash
-docker build -t martindsouza/amazon-ask-cli .
+docker build -t crackmac/docker-amazon-ask-cli .
 
 # Pushing to Docker Hub
 # Note: not required since I have a build hook linked to the repo
 # docker login
-# docker build -t martindsouza/amazon-ask-cli:0.0.1 .
-# docker push martindsouza/amazon-ask-cli
+# docker build -t crackmac/docker-amazon-ask-cli:0.0.1 .
+# docker push crackmac/docker-amazon-ask-cli
 ```
 
 ## Sample `ask` commands

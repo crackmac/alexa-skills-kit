@@ -6,16 +6,6 @@ The purpose of this container is to be able to use the [Amazon ASK CLI (Alexa Sk
 
 - [docker-amazon-ask-cli](#docker-amazon-ask-cli)
   - [Example](#example)
-  - [AWS Config (optional)](#aws-config-optional)
-    - [`aws configure`](#aws-configure)
-    - [Setting `credentials` and `config` file](#setting-credentials-and-config-file)
-  - [Usage](#usage)
-    - [Run One Command](#run-one-command)
-    - [Run `bash`, then run `ask`](#run-bash-then-run-ask)
-    - [Volumes](#volumes)
-  - [Developers](#developers)
-  - [Sample `ask` commands](#sample-ask-commands)
-  - [Links:](#links)
 
 <!-- /TOC -->
 
@@ -34,53 +24,71 @@ docker pull registry.gitlab.com/crackmac/amazon-ask-cli
 cd ~
 mkdir alexa-demo \
   alexa-demo/ask-config \
-  alexa-demo/aws-config \
+  alexa-demo/ask-config \
   alexa-demo/app
+cd alexa-demo
 
 # Note copy the aws-config information (see below) to the aws-config folder
 
 # To help simply writing out a full docker run command each time will use an alias
 alias alexa="docker run -it --rm \
-  -v ~/alexa-demo/ask-config:/home/node/.ask \
-  -v ~/alexa-demo/aws-config:/home/node/.aws \
-  -v ~/alexa-demo/app:/home/node/app \
+  -v $(pwd)/ask-config:/home/node/.ask \
+  -v $(pwd)/aws-config:/home/node/.aws \
+  -v $(pwd)/app:/home/node/app \
   registry.gitlab.com/crackmac/docker-amazon-ask-cli/master:latest "
 
 # Configure ASK
-alexa ask init --no-browser
+alexa ask configure --no-browser
 
-# ? Please choose one from the following AWS profiles for skill's Lambda function deployment.
-#  default
-# Chose default and hit enter
-#
-# A URL will be printed on screen. Copy and past into your browser
-# Login using your Amazon Developer account
-# Copy the code that is shown on the screen and past in the terminal
-# You should see a success message like: Tokens fetched and recorded in ask-cli config.
+    This command will configure the ASK CLI with a profile associated with your Amazon developer credentials.
+    ------------------------- Step 1 of 2 : ASK CLI Configuration -------------------------
+    [Warn]: ASK CLI uses authorization code to fetch LWA tokens. Do not share neither your authorization code nor access tokens.
+    Paste the following url to your browser:
+        https://www.amazon.com/ap/yaddayaddayaddaask-cli-no-browser.html
+    ? Please enter the Authorization Code:  ANTgeVLdNYhHOCGdlkJo
+    ASK Profile "default" was successfully created. The details are recorded in ask-cli config file (.ask/cli_config) located at your **HOME** folder.
+    Vendor ID set as MQOXXXXXXE85.
 
+    ------------------------- Step 2 of 2 : Associate an AWS Profile with ASK CLI -------------------------
+    [Warn]: ASK CLI will create an IAM user and generate corresponding access key id and secret access key. Do not share neither of them.
+    ? Do you want to link your AWS account in order to host your Alexa skills? Yes
 
-# Verify profile was created
-alexa ask init -l
-# Should return:
-# Profile              Associated AWS Profile
-# [default]                 ** NULL **
+    Complete the IAM user creation with required permissions from the AWS console, then come back to the terminal.
+    Please open the following url in your browser:
+        https://console.aws.amazon.com/iam/home?region=undefined#/users$new?accessKey=true&step=review&userNames=ask-cli-askclidefault&permissionTXXXXXXy%2FAWSLambdaFullAccess
 
+    Please fill in the "Access Key ID" and "Secret Access Key" from the IAM user creation final page.
+    ? AWS Access Key ID:  AKIAXXXXXXXABN7PAQ
+    ? AWS Secret Access Key:  [hidden]
+
+    AWS profile "ask_cli_default" was successfully created. The details are recorded in aws credentials file (.aws/credentials) located at your **HOME** folder.
+    AWS profile "ask_cli_default" was successfully associated with your ASK profile "default".
+
+    ------------------------- Configuration Complete -------------------------
+    Here is the summary for the profile setup: 
+    ASK Profile: default
+    AWS Profile: ask_cli_default
+    Vendor ID: MQXXXXXXE85
 
 # Create a new app:
-alexa ask new --skill-name HelloWorld
-# New project for Alexa skill created.
-# This will also create a new folder: ~/alexa-demo/HelloWorld
+alexa ask new 
+    Please follow the wizard to start your Alexa skill project ->
+    ? Choose the programming language you will use to code your skill:  NodeJS
+    ? Choose a method to host your skill's backend resources:  AWS Lambda
+      Host your skill code on AWS Lambda (requires AWS account).
+    ? Choose a template to start with:  Hello world             Alexa's hello world skill to send the greetings to the world!
+    ? Please type in your skill name:  skill-sample-nodejs-hello-world
+    ? Please type in your folder name for the skill project (alphanumeric):  app
+    Project for skill "skill-sample-nodejs-hello-world" is successfully created at /home/node/app/app
 
-# To create a new app with lambda:
-# alexa ask new --skill-name HelloWorld --lambda-name hello-world-service
+    Project initialized with deploy delegate "@ask-cli/lambda-deployer" successfully.
 
 
 # Move the HellowWorld folder back to app directory
-cd ~/alexa-demo/app/
-mv HelloWorld/* .
-mv HelloWorld/.ask .
-mv HelloWorld/.git* .
-rmdir HelloWorld
+cd app/
+mv hello-world/* .
+mv hello-world/.* .
+rmdir hello-world
 
 # Deploy (all): this will create both lambda and Alexa Skill
 alexa ask deploy
@@ -95,93 +103,7 @@ alexa ask deploy
 # Try invoking the skill by saying “Alexa, open {your_skill_invocation_name}” or simulate an invocation via the `ask simulate` command.
 
 
-# Other options are:
-# alexa ask deploy -t lambda
-# alexa ask deploy -t skill
-# alexa ask deploy -t model
-
-
-```
-
-## AWS Config (optional)
-If you plan to use [Lambda](https://aws.amazon.com/lambda/) you'll need to configure the AWS CLI. To simplify. You can configure it multiple ways.
-
-In either case ensure that you pass in `-v $(pwd)/aws-config:/home/node/.aws \` (where `$(pwd)/aws-config` is a location on your host machine) as an option when running the container to preserve the AWS configuration.
-
-### `aws configure`
-
-Running `aws configure` in the container will ask you a set of questions to create the AWS credentials
-
-### Setting `credentials` and `config` file
-
-Copy the files in [`samples/aws-config`](samples/aws-config) to your local/host folder that will hold the credentials. You need to modify the `credentials` file with your `aws_access_key_id` and `aws_secret_access_key` at a minimum.
-
-## Usage
-
-Get the latest version of the container: `docker pull martindsouza/amazon-ask-cli`
-
-They're two ways to use the `ask` cli for this container which are covered below. The volume documentation is listed following the examples.
-
-### Run One Command
-
-In this mode the container will start, you run your `ask` command, then the container is stopped and deleted. _Don't worry your Docker image is still kept._
-
-```bash
-docker run -it --rm \
-  -v $(pwd)/ask-config:/home/node/.ask \
-  -v $(pwd)/hello-world:/home/node/app-dev \
-  registry.gitlab.com/crackmac/docker-amazon-ask-cli/master:latest \
-  ask init -l
-```
-
-### Run `bash`, then run `ask`
-
-In this mode, the container will start, you can then run the container's bash, and the container will stop and delete only once you `exit`.
-
-```bash
-docker run -it --rm \
-  -v $(pwd)/ask-config:/home/node/.ask \
-  -v $(pwd)/app-dev/HelloWorld:/home/node/app-dev \
-  registry.gitlab.com/crackmac/docker-amazon-ask-cli/master:latest \
-  bash
-
-# You'll be prompted with:
-# bash-4.3$
-#
-# Type: exit  to end and terminate the container
-```
-
-
-### Volumes
-
-Path | Description 
---- | ---
-`/home/node/.ask` | `.ask` configuration folder for ASK cli
-`/home/node/.aws` | `.aws` configuration folder AWS cli 
-`/home/node/app` | folder where your Alexa project is stored
-
-
-## Developers
-
-```bash
-docker build -t crackmac/docker-amazon-ask-cli .
-
-# Pushing to Docker Hub
-# Note: not required since I have a build hook linked to the repo
-# docker login
-# docker build -t crackmac/docker-amazon-ask-cli:0.0.1 .
-# docker push crackmac/docker-amazon-ask-cli
-```
-
-## Sample `ask` commands
-
-```bash
-# Delete skill
-alexa ask api delete-skill -s SKILL_ID
-```
-
-## Links:
-
-- [ASK CLI Quickstart](https://developer.amazon.com/docs/smapi/quick-start-alexa-skills-kit-command-line-interface.html)
-- [ASK CLI Full Doc](https://developer.amazon.com/docs/smapi/ask-cli-intro.html#alexa-skills-kit-command-line-interface-ask-cli)
-
+# Other command options are:
+alexa ask deploy -t lambda
+alexa ask deploy -t skill
+alexa ask deploy -t model

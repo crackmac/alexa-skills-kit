@@ -17,4 +17,3 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: crackmac/alexa-skills-kit
         tag_with_ref: true
-        push: ${{ startsWith(github.ref, 'refs/tags/') }}

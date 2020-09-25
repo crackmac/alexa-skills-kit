@@ -1,10 +1,10 @@
 # Original source from https://hub.docker.com/_/node/
-FROM node:12.16.3-alpine
+FROM node:12.18.4-alpine
 LABEL maintainer="Martin DSouza <martin@talkapex.com>"
 LABEL maintainer="Kevin Duane <crackmac@gmail.com>"
 
 # ASK CLI version
-ARG ASKVER=2.15.0
+ARG ASKVER=2.16.0
 
 # NPM_CONFIG_PREFIX: See below
 # PATH: Required for ask cli location

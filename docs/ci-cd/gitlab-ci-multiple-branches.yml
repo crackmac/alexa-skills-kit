@@ -1,0 +1,62 @@
+image: crackmac/alexa-skills-kit:2.15.0
+
+cache:
+  paths:
+  - $CI_PROJECT_DIR/app/lambda/node_modules/
+
+before_script:
+  - mkdir -p /home/node/.ask
+  - mkdir -p /home/node/.aws
+  - cp -f $ASK_CONFIG /home/node/.ask/cli_config
+  - cp -f $AWS_CREDS /home/node/.aws/credentials
+  - cp -f $AWS_CONFIG /home/node/.aws/config
+  - ask --version 
+  - node --version
+  - cd app
+  - aws s3 cp s3://ask-state-json/$CI_PROJECT_NAME/ask-states.json app/.ask/ask-states.json --profile ask_cli_default
+
+after_script:
+  - aws s3 cp app/.ask/ask-states.json s3://ask-state-json/$CI_PROJECT_NAME/ask-states.json --profile ask_cli_default
+
+stages:
+ - dev
+ - stage
+ - prod
+
+DEV:
+  stage: dev
+  script:
+    - ask deploy -p ${CI_COMMIT_REF_NAME}
+  environment:
+    name: ${CI_COMMIT_REF_NAME}
+  artifacts:
+    paths:
+      - .ask/ask-states.json
+  only:
+    - /^dev.*$/
+
+STAGE:
+  stage: stage
+  script:
+    - ask deploy -p ${CI_COMMIT_REF_NAME}
+  environment:
+    name: ${CI_COMMIT_REF_NAME}
+  artifacts:
+    paths:
+      - .ask/ask-states.json
+  only:
+    - /^stage.*$/
+  when: manual
+
+PROD:
+  stage: prod
+  script:
+    - ask deploy
+  environment:
+    name: production
+  artifacts:
+    paths:
+      - .ask/ask-states.json
+  only:
+    - master
+  when: manual

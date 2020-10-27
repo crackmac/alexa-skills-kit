@@ -1,0 +1,65 @@
+image: crackmac/alexa-skills-kit:2.15.0
+
+cache:
+  paths:
+  - $CI_PROJECT_DIR/app/lambda/node_modules/
+
+before_script:
+  - mkdir -p /home/node/.ask
+  - mkdir -p /home/node/.aws
+  - cp -f $ASK_CONFIG /home/node/.ask/cli_config
+  - cp -f $AWS_CREDS /home/node/.aws/credentials
+  - cp -f $AWS_CONFIG /home/node/.aws/config
+  - ask --version 
+  - node --version
+  - cd app
+  - aws s3 cp s3://ask-state-json/$CI_PROJECT_NAME/ask-states.json app/.ask/ask-states.json --profile ask_cli_default
+
+after_script:
+  - aws s3 cp app/.ask/ask-states.json s3://ask-state-json/$CI_PROJECT_NAME/ask-states.json --profile ask_cli_default
+
+stages:
+ - dev
+ - stage
+ - prod
+
+DEV:
+  stage: dev
+  script:
+    - ask deploy -p ${CI_COMMIT_REF_NAME}
+    - aws s3 sync skill-package-$CI_COMMIT_BRANCH/assets s3://$S3AssetBucket_$CI_COMMIT_BRANCH/assets --profile ask_cli_default
+  environment:
+    name: ${CI_COMMIT_REF_NAME}
+  artifacts:
+    paths:
+      - .ask/ask-states.json
+  only:
+    - /^dev.*$/
+
+STAGE:
+  stage: stage
+  script:
+    - ask deploy -p ${CI_COMMIT_REF_NAME}
+    - aws s3 sync skill-package-$CI_COMMIT_BRANCH/assets s3://$S3AssetBucket_$CI_COMMIT_BRANCH/assets --profile ask_cli_default
+  environment:
+    name: ${CI_COMMIT_REF_NAME}
+  artifacts:
+    paths:
+      - .ask/ask-states.json
+  only:
+    - /^stage.*$/
+  when: manual
+
+PROD:
+  stage: prod
+  script:
+    - ask deploy
+    - aws s3 sync skill-package/assets s3://$S3AssetBucket_prod/assets --profile ask_cli_default
+  environment:
+    name: production
+  artifacts:
+    paths:
+      - .ask/ask-states.json
+  only:
+    - master
+  when: manual

@@ -37,7 +37,7 @@
     2.15.0
 
 > alexa node --version
-    v12.19.1
+    v12.19.2
 ```
 
 ### Configure ASK

@@ -1,4 +1,4 @@
-image: crackmac/alexa-skills-kit:2.15.0
+image: crackmac/alexa-skills-kit:2.19.1
 
 cache:
   paths:

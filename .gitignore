@@ -2,3 +2,5 @@ alexa-demo
 node_modules/
 package-lock.json
 .DS_Store
+docs/ci-cd/gitlab-ci-multiple-branches.yml
+docs/ci-cd/gitlab-ci-s3-assets-sync.yml

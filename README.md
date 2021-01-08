@@ -6,13 +6,13 @@ This document will walk you through how to use the ASK CLI container to create a
 
 ## New skill
 
-### Get docker image
+### Pull docker image
 
 ```bash
-> docker pull registry.gitlab.com/crackmac/alexa-skill-kit-cli/master:latest
+> docker pull crackmac/alexa-skills-kit:2.22.1
 ```
 
-### Create a ASK configuration folders
+### Create the folder structure
 
 ```bash
 > cd ~
@@ -23,7 +23,7 @@ This document will walk you through how to use the ASK CLI container to create a
 > cd alexa-demo
 ```
 
-### To help simply writing out a full docker run command each time will use an alias
+### Create an alias to simply the docker run command
 
 ```bash
 > alias alexa="docker run -it --rm \
@@ -46,7 +46,7 @@ This document will walk you through how to use the ASK CLI container to create a
     v12.18.4
 ```
 
-### Configure ASK
+### Configure the ASK utility
 
 ```bash
 > alexa ask configure --no-browser
@@ -156,6 +156,14 @@ alexa ask deploy
 
 ```bash
 > alexa ask deploy
+```
+### Delete a skill
+
+1. Delete stack in CloudFormation
+2. Use `ask smapi` to delete skill
+
+```bash
+> alexa ask smapi delete-skill -s amzn1.ask.skill.721da2a7-09cf-4ff1-b47e-f459df68f814
 ```
 
 ### Other command options

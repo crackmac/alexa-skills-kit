@@ -9,7 +9,7 @@ This document will walk you through how to use the ASK CLI container to create a
 ### Pull docker image
 
 ```bash
-> docker pull crackmac/alexa-skills-kit:2.22.1
+> docker pull crackmac/alexa-skills-kit:2.22.2
 ```
 
 ### Create the folder structure
@@ -30,7 +30,7 @@ This document will walk you through how to use the ASK CLI container to create a
    -v $(pwd)/ask-config:/home/node/.ask \
    -v $(pwd)/aws-config:/home/node/.aws \
    -v $(pwd)/app:/home/node/app \
-   crackmac/alexa-skills-kit:2.22.1 "
+   crackmac/alexa-skills-kit:2.22.2 "
 ```
 
 ## Verify things work by checking tool versions
@@ -40,7 +40,7 @@ This document will walk you through how to use the ASK CLI container to create a
     aws-cli/1.18.89 Python/2.7.18 Linux/4.19.76-linuxkit botocore/1.17.12
 
 > alexa ask --version
-    2.22.1
+    2.22.2
 
 > alexa node --version
     v12.18.4

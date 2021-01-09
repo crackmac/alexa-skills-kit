@@ -1,7 +1,7 @@
 1. Check Alexa CLI Github tags for latest. https://github.com/alexa/ask-cli/tags
 3. Update Dockerfile and Readme.md with new version (use search replace)
 4. Optional - check and update Dockerfile with latest v12.x.x Node docker image version. 
-5. Commit changes to Git. (git commit -am 'v2.22.1 update')
-6. Git tag commit with version number (git tag v2.22.1). This is needed by Github Actions pipeline.
-7. Git push tag (git push origin v2.22.1)
+5. Commit changes to Git. (git commit -am 'v2.22.2 update')
+6. Git tag commit with version number (git tag v2.22.2). This is needed by Github Actions pipeline.
+7. Git push tag (git push origin v2.22.2)
 8. Git push master branch (git push origin master)

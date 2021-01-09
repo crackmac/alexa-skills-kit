@@ -1,23 +1,25 @@
-## How to setup a new skill 
+## New skill
+
+Before working through this example ensure that you've registered for an [Alexa Developer](https://developer.amazon.com/alexa) account.
 
 ### Pull docker image
 
 ```bash
-> docker pull docker.moviesanywhere.io/alexa/docker-alexa-skill-kit
+> docker pull docker.moviesanywhere.io/alexa/docker-alexa-skill-kit:2.22.2
 ```
 
-### Create a ASK configuration folders
+### Create the folder structure
 
 ```bash
 > cd ~
-> mkdir demo-skill \
-  demo-skill/ask-config \
-  demo-skill/aws-config \
-  demo-skill/app
-> cd demo-skill
+> mkdir alexa-demo \
+  alexa-demo/ask-config \
+  alexa-demo/aws-config \
+  alexa-demo/app
+> cd alexa-demo
 ```
 
-### To help simply writing out a full docker run command each time will use an alias
+### Create an alias to simply the docker run command
 
 ```bash
 > alias alexa="docker run -it --rm \
@@ -37,10 +39,10 @@
     2.22.2
 
 > alexa node --version
-    v12.22.2
+    v12.18.4
 ```
 
-### Configure ASK
+### Configure the ASK utility
 
 ```bash
 > alexa ask configure --no-browser
@@ -85,9 +87,9 @@
     ? Choose a method to host your skill's backend resources:  AWS Lambda
       Host your skill code on AWS Lambda (requires AWS account).
     ? Choose a template to start with:  Hello world             Alexa's hello world skill to send the greetings to the world!
-    ? Please type in your skill name:  demo-skill
-    ? Please type in your folder name for the skill project (alphanumeric):  demo-skill
-    Project for skill "skill-sample-nodejs-hello-world" is successfully created at /home/node/app/demo-skill
+    ? Please type in your skill name:  skill-sample-nodejs-hello-world
+    ? Please type in your folder name for the skill project (alphanumeric):  app
+    Project for skill "skill-sample-nodejs-hello-world" is successfully created at /home/node/app/app
 
     Project initialized with deploy delegate "@ask-cli/lambda-deployer" successfully.
 ```
@@ -96,9 +98,9 @@
 
 ```bash
 cd app/
-mv demo-skill/* .
-mv demo-skill/.* .
-rmdir demo-skill
+mv hello-world/* .
+mv hello-world/.* .
+rmdir hello-world
 ```
 
 ### Deploy (all): this will create both lambda and Alexa Skill
@@ -115,77 +117,3 @@ alexa ask deploy
     Your skill is now deployed and enabled in the development stage.
     Try invoking the skill by saying “Alexa, open {your_skill_invocation_name}” or simulate an invocation via the `ask simulate` command.
 ```
-
-## Existing Skills
-
-### Initialize with 'ask init'
-
-```bash
-> alexa ask init
-
-    This utility will walk you through creating an ask-resources.json file to help deploy
-    your skill. This only covers the most common attributes and will suggest sensible
-    defaults using AWS Lambda as your endpoint.
-
-    This command is supposed to be running at the root of your ask-cli project, with the
-    Alexa skill package and AWS Lambda code downloaded already.
-    - Use "ask smapi export-package" to download the skill package.
-    - Move your Lambda code into this folder depending on how you manage the code. It can
-    be downloaded from AWS console, or git-cloned if you use git to control version.
-
-    This will utilize your 'default' ASK profile. Run with "--profile" to specify a
-    different profile.
-
-    Press ^C at any time to quit.
-
-    ? Skill Id (leave empty to create one):
-    ? Skill package path:  ./skill-package
-    ? Lambda code path for default region (leave empty to not deploy Lambda):  ./lambda
-    ? Use AWS CloudFormation to deploy Lambda?  Yes
-    ? Lambda runtime:  nodejs10.x
-    ? Lambda handler:  index.handler
-```
-
-### Deploy existing (all): this will create both lambda and Alexa Skill
-
-```bash
-> alexa ask deploy
-```
-
-## Multiple Environments (multiple skills)
-
-The ask cli does not manage multiple environments in the way we would like so we have created this workaround. I'm going to try and script out as much of this as possible. 
-https://github.com/alexa/ask-cli/issues/284
-
-1. Add 2nd ask config profile (this is necessary)
-  - `alexa ask configure --no-browser -p dev`
-  - Vendor ID 5) DCPI: M2AVK3D5BVIU8C
-2. Create new branch
-  - `git checkout -b dev`
-3. Copy ‘skill-package’ dir and rename (ie.  skill-package-dev)
-  - Change ‘name’ field to skill’s branch name (ie. f84-demo2-dev)
-  - Remove endpoint block (ie. "custom": {}
-4. run `alexa ask init -p dev`
-  - When it asks for skill-package location, write in new path
-5. deploy `alexa ask deploy -p dev`
-
-## Delete skill
-
-> alexa ask smapi delete-skill -s amzn1.ask.skill.5f2a8196-f774-41cd-b1a2-872d06124132
-
-### Other command options
-
-```bash
-> alexa ask deploy -t lambda
-> alexa ask deploy -t skill
-> alexa ask deploy -t model
-> alexa ask smapi delete-skill -s xxxx
-> alexa ask smapi get-skill-status -s xxx
-```
-
-
-# alexa-skill-kit-cli
-
-The purpose of this container is to simplify the use of [Amazon ASK CLI (Alexa Skills Kit)](https://developer.amazon.com/docs/smapi/ask-cli-intro.html#alexa-skills-kit-command-line-interface-ask-cli) in containerized workflows.
-
-This document will walk you through how to use the ASK CLI container to create and deploy a simple `HelloWorld` Alexa Skill. Before working through this example ensure that you've registered for an [Alexa Developer](https://developer.amazon.com/alexa) account.

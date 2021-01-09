@@ -1,4 +1,4 @@
-image: crackmac/alexa-skills-kit:2.19.1
+image: docker.moviesanywhere.io/alexa/docker-alexa-skill-kit:2.22.2
 
 cache:
   paths:

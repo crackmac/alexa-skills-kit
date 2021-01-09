@@ -23,7 +23,7 @@ docker-build-master:
 docker-build:
   stage: build
   script:
-    - docker build --pull -t "${DOCKER_REGISTRY}/${REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}_${CI_PIPELINE_IID}" .
-    - docker push "${DOCKER_REGISTRY}/${REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}_${CI_PIPELINE_IID}"
-  except:
-    - main
+    - docker build --pull -t "${DOCKER_REGISTRY}/${REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}" .
+    - docker push "${DOCKER_REGISTRY}/${REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
+  only:
+    - /^v.*$/

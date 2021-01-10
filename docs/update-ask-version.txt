@@ -1,5 +1,6 @@
 1. Check Alexa CLI Github tags for latest. https://github.com/alexa/ask-cli/tags
-3. Update Dockerfile and Readme.md with new version (use search replace)
+2. Update ASKVER in Dockerfile with new version 
+3. Search replace old version in docs. (Note "-"s instead of "."s like 2-22-2)
 4. Optional - check and update Dockerfile with latest v12.x.x Node docker image version. 
 5. Commit changes to Git. (git commit -am 'v2.22.2 update')
 6. Git tag commit with version number (git tag v2.22.2). This is needed by Github Actions pipeline.

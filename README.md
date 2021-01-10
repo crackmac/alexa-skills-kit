@@ -1,6 +1,6 @@
 # docker-alexa-skill-kit
 
-This Docker image was created to simplify the use of [Amazon ASK CLI (Alexa Skills Kit)](https://developer.amazon.com/docs/smapi/ask-cli-intro.html#alexa-skills-kit-command-line-interface-ask-cli) in CI/CD workflows.
+This Docker image was created to simplify the use of the [Amazon ASK CLI (Alexa Skills Kit)](https://developer.amazon.com/docs/smapi/ask-cli-intro.html#alexa-skills-kit-command-line-interface-ask-cli) in CI/CD workflows.
 
 ## Tutorials
 

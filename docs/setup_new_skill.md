@@ -5,7 +5,7 @@ Before working through this example ensure that you've registered for an [Alexa 
 ### Pull docker image
 
 ```bash
-> docker pull docker.moviesanywhere.io/alexa/docker-alexa-skill-kit:2-22-2
+> docker pull docker.moviesanywhere.io/alexa/docker-alexa-skill-kit:2-22-3
 ```
 
 ### Create the folder structure
@@ -26,7 +26,7 @@ Before working through this example ensure that you've registered for an [Alexa 
    -v $(pwd)/ask-config:/home/node/.ask \
    -v $(pwd)/aws-config:/home/node/.aws \
    -v $(pwd)/app:/home/node/app \
-   docker.moviesanywhere.io/alexa/docker-alexa-skill-kit:2-22-2 "
+   docker.moviesanywhere.io/alexa/docker-alexa-skill-kit:2-22-3 "
 ```
 
 ## Verify things work by checking tool versions
@@ -36,7 +36,7 @@ Before working through this example ensure that you've registered for an [Alexa 
     aws-cli/1.18.89 Python/2.7.18 Linux/4.19.76-linuxkit botocore/1.17.12
 
 > alexa ask --version
-    2.22.2
+    2.22.3
 
 > alexa node --version
     v12.18.4

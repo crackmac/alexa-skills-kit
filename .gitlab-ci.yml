@@ -1,0 +1,29 @@
+image: docker:19
+services:
+  - docker:19-dind
+
+variables:
+  REGISTRY_IMAGE: alexa/docker-alexa-skill-kit
+  DOCKER_REGISTRY: docker.moviesanywhere.io
+  DOCKER_HOST: tcp://localhost:2375/
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+
+before_script:
+  - mkdir ~/.docker; echo ${DOCKER_REGISTRY_CONFIG} > ~/.docker/config.json
+
+docker-build-master:
+  stage: build
+  script:
+    - docker build --pull -t "${DOCKER_REGISTRY}/${REGISTRY_IMAGE}:latest" .
+    - docker push "${DOCKER_REGISTRY}/${REGISTRY_IMAGE}:latest"
+  only:
+    - main
+
+docker-build:
+  stage: build
+  script:
+    - docker build --pull -t "${DOCKER_REGISTRY}/${REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}" .
+    - docker push "${DOCKER_REGISTRY}/${REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
+  only:
+    - /^v.*$/

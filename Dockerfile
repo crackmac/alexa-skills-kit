@@ -3,7 +3,7 @@ FROM node:12.18.4-alpine
 LABEL maintainer="Kevin Duane <kevin.duane@disney.com>"
 
 # ASK CLI version
-ARG ASKVER=2.24.0
+ARG ASKVER=2.24.1
 
 # NPM_CONFIG_PREFIX: See below
 # PATH: Required for ask cli location

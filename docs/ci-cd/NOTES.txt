@@ -24,7 +24,7 @@
    -v $(pwd)/ask-config:/home/node/.ask \
    -v $(pwd)/aws-config:/home/node/.aws \
    -v $(pwd)/app:/home/node/app \
-   docker.moviesanywhere.io/alexa/docker-alexa-skill-kit:2-24-0 "
+   docker.moviesanywhere.io/alexa/docker-alexa-skill-kit:2-24-1 "
 ```
 
 ## Verify things work by checking tool versions
@@ -34,10 +34,10 @@
     aws-cli/1.18.89 Python/2.7.18 Linux/4.19.76-linuxkit botocore/1.17.12
 
 > alexa ask --version
-    2.24.0
+    2.24.1
 
 > alexa node --version
-    v12.24.0
+    v12.24.1
 ```
 
 ### Configure ASK
